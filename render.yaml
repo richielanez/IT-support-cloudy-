@@ -1,0 +1,56 @@
+services:
+  - type: web
+    name: cloudy-it-backend
+    env: node
+    rootDir: backend
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    plan: starter
+    autoDeploy: true
+
+    envVars:
+      - key: PORT
+        value: 10000
+
+      - key: MONGO_URI
+        sync: false
+
+      - key: JWT_SECRET
+        sync: false
+
+      - key: SYSTEM_EMAIL
+        sync: false
+
+      - key: SYSTEM_EMAIL_PASSWORD
+        sync: false
+
+      - key: STRIPE_SECRET_KEY
+        sync: false
+
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+
+      - key: STRIPE_MONTHLY_PRICE_ID
+        sync: false
+
+      - key: STRIPE_ANNUAL_PRICE_ID
+        sync: false
+
+      - key: FRONTEND_PUBLIC_URL
+        sync: false
+
+    disks:
+      - name: pdfstorage
+        mountPath: /opt/render/project/src/generated
+        sizeGB: 1
+
+  - type: static
+    name: cloudy-it-frontend
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    publishPath: dist
+    autoDeploy: true
+
+    envVars:
+      - key: VITE_API_URL
+        sync: false
